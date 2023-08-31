@@ -14,7 +14,8 @@ public class StdinAndStdout2 {
 		String thirdLine = bufferedReader.readLine().trim();
 		bufferedReader.close();
 		System.out.println("String: " + thirdLine);
-		System.out.println("String: " + thirdLine);
+		System.out.println("Double: " + secondLine);
+		System.out.println("Int: " + firstLine);		
 	}
 
 }
