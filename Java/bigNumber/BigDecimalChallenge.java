@@ -25,9 +25,10 @@ public class BigDecimalChallenge {
     				BigDecimal switcher = arrayOfBigDecimals[i];
             		arrayOfBigDecimals[i] = arrayOfBigDecimals[i+1];
             		arrayOfBigDecimals[i+1] = switcher;
-            		String switcherString = s[i];
+            		s[s.length - 1] = s[i];
             		s[i] = s[i+1];
-            		s[i+1] = switcherString;
+            		s[i+1] = s[s.length - 1];
+            		s[s.length - 1] = "";
             		sorted = false;
     			}
             }
