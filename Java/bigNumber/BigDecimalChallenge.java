@@ -20,7 +20,7 @@ public class BigDecimalChallenge {
         boolean sorted = false;
         while (!sorted) {
         	sorted = true;
-        	for(int i = 0; i < arrayOfBigDecimals.length - 3; i++) {
+        	for(int i = 0; i < arrayOfBigDecimals.length - 1; i++) {
             	if ((arrayOfBigDecimals[i].compareTo(arrayOfBigDecimals[i+1]) == -1)) {
     				BigDecimal switcher = arrayOfBigDecimals[i];
             		arrayOfBigDecimals[i] = arrayOfBigDecimals[i+1];
