@@ -50,7 +50,7 @@ class MyMath {
 
 public class LambdaExpressions {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		MyMath ob = new MyMath();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
