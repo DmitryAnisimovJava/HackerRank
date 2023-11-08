@@ -1,0 +1,46 @@
+SET @size = (SELECT count(*) AS c
+            FROM occupations 
+            GROUP BY occupation
+            ORDER BY c DESC
+            LIMIT 1);
+
+SELECT D.Doctor, P.Professor, S.Singer, A.Actor
+FROM 
+(SELECT  
+    (CASE
+        WHEN occupation = 'Doctor' THEN name
+    END) AS Doctor,
+    @rownum := @rownum + 1 AS row_num
+ FROM Occupations
+ CROSS JOIN (SELECT @rownum := 0) r
+    ORDER BY Doctor IS NULL, Doctor ASC) D
+INNER JOIN 
+(SELECT 
+    (CASE
+        WHEN occupation = 'Professor' THEN name
+    END) AS Professor, 
+ @rownum2 := @rownum2 + 1 AS row_num
+ FROM Occupations
+CROSS JOIN (SELECT @rownum2 := 0) r
+    ORDER BY Professor IS NULL, Professor ASC) P
+    ON D.row_num = P.row_num AND D.row_num <= @size 
+INNER JOIN 
+(SELECT 
+    (CASE
+        WHEN occupation = 'Singer' THEN name
+    END) AS Singer, 
+ @rownum3 := @rownum3 + 1 AS row_num
+ FROM Occupations
+CROSS JOIN (SELECT @rownum3 := 0) r
+    ORDER BY Singer IS NULL, Singer ASC) S
+    ON S.row_num = P.row_num AND S.row_num <= @size
+INNER JOIN 
+(SELECT 
+    (CASE
+        WHEN occupation = 'Actor' THEN name
+    END) AS Actor, 
+ @rownum4 := @rownum4 + 1 AS row_num
+ FROM Occupations
+CROSS JOIN (SELECT @rownum4 := 0) r
+    ORDER BY Actor IS NULL, Actor ASC) A
+    ON A.row_num = P.row_num AND A.row_num <= @size ;
