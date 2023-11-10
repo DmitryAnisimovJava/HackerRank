@@ -1,0 +1,27 @@
+SELECT Empl.company_code, founder, Lead.sum, Sen.sum, Mng.sum, Empl.sum
+FROM 
+    (SELECT company_code,
+        count(*) AS sum
+    FROM Employee
+    GROUP BY company_code) Empl
+INNER JOIN Company
+ON Empl.company_code = Company.company_code
+INNER JOIN
+    (SELECT company_code, 
+     count(*) AS sum
+    FROM Lead_Manager
+    GROUP BY company_code) Lead
+ON Empl.company_code = Lead.company_code
+INNER JOIN
+    (SELECT company_code, 
+     count(*) AS sum
+    FROM Senior_Manager 
+    GROUP BY company_code) Sen
+ON Empl.company_code = Sen.company_code
+INNER JOIN
+    (SELECT company_code, 
+     count(*) AS sum
+    FROM Manager
+    GROUP BY company_code) Mng
+ON Empl.company_code = Mng.company_code
+ORDER BY Empl.company_code;
