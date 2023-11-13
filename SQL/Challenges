@@ -1,0 +1,17 @@
+SELECT H.hacker_id, H.name, count(*) AS counter
+FROM hackers H
+JOIN Challenges C
+ON H.hacker_id = C.hacker_id
+GROUP BY H.hacker_id, H.name
+HAVING (counter NOT IN (SELECT result
+                            FROM 
+                            (SELECT count(challenge_id) AS result,
+                            max(count(challenge_id)) OVER () AS maximum
+                            FROM Hackers H
+                            JOIN Challenges C
+                            ON H.hacker_id = C.hacker_id
+                            GROUP BY H.hacker_id) AS groupping
+                            WHERE result < maximum 
+                            GROUP BY result
+                            HAVING (count(*) > 1)))
+ORDER BY counter DESC, H.hacker_id;
