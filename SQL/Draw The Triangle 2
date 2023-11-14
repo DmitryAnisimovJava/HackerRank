@@ -1,0 +1,6 @@
+WITH RECURSIVE cte_triangle AS 
+(SELECT 1 AS n, CAST('* ' AS CHAR(100)) AS str
+ UNION ALL
+ SELECT n + 1, concat('* ', str) FROM cte_triangle WHERE n < 20)
+
+Select str from cte_triangle;
