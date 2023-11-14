@@ -1,0 +1,8 @@
+SELECT round(avg(LAT_N), 4)
+FROM (SELECT ID, LAT_N, 
+      @row := @row + 1 AS row_num
+      FROM station 
+      CROSS JOIN (SELECT @row := 0) r
+      ORDER BY LAT_N ) result
+WHERE (row_num IN (ceil(@row / 2)) AND (@row & 0x1 = 1)) OR 
+      (row_num IN ((@row / 2), (@row / 2 + 1)) AND (@row & 0x1 = 0));
