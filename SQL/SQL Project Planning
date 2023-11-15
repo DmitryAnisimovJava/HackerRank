@@ -1,0 +1,15 @@
+WITH cte_start AS (
+    SELECT Start_Date, ROW_NUMBER() OVER (ORDER BY Start_Date) AS row_num 
+    FROM Projects
+    WHERE Start_Date NOT IN (SELECT End_Date FROM Projects)
+), 
+cte_end AS (
+    SELECT End_Date, ROW_NUMBER() OVER (ORDER BY Start_Date) AS row_num
+    FROM Projects
+    WHERE End_Date NOT IN (SELECT Start_Date FROM Projects)
+) 
+SELECT S.Start_Date, E.End_Date
+FROM cte_start S
+JOIN cte_end E
+USING(row_num)
+ORDER BY E.End_Date - S.Start_Date ASC, S.Start_Date; 
