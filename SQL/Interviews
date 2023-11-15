@@ -1,0 +1,32 @@
+SELECT contest_id, hacker_id, name, sum(sum_sub), sum(sum_acc), sum(sum_view), sum(sum_uni) 
+FROM (SELECT contest_id, hacker_id, name, college_id, ch1, ch2, IFNULL(sum_view,0) AS sum_view, IFNULL(sum_uni,0) AS sum_uni, IFNULL(sum_sub,0) AS sum_sub, IFNULL(sum_acc,0) AS sum_acc
+FROM (SELECT view_st.challenge_id AS ch1, sub_st.challenge_id AS ch2, sum_view, sum_uni, sum_sub, sum_acc
+FROM (SELECT challenge_id, sum(total_views) AS sum_view, sum(total_unique_views) AS sum_uni 
+    FROM View_Stats
+    GROUP BY challenge_id
+    ORDER BY challenge_id) AS view_st
+LEFT JOIN (SELECT challenge_id, sum(total_submissions) AS sum_sub, sum(total_accepted_submissions) AS sum_acc
+     FROM Submission_Stats 
+     GROUP BY challenge_id
+     ORDER BY challenge_id) AS sub_st
+USING(challenge_id)
+UNION
+SELECT view_st.challenge_id AS ch1, sub_st.challenge_id AS ch2, sum_view, sum_uni, sum_sub, sum_acc
+FROM (SELECT challenge_id, sum(total_views) AS sum_view, sum(total_unique_views) AS sum_uni 
+    FROM View_Stats
+    GROUP BY challenge_id
+    ORDER BY challenge_id) AS view_st
+RIGHT JOIN (SELECT challenge_id, sum(total_submissions) AS sum_sub, sum(total_accepted_submissions) AS sum_acc
+     FROM Submission_Stats 
+     GROUP BY challenge_id
+     ORDER BY challenge_id) AS sub_st
+USING(challenge_id)) AS total
+JOIN Challenges Ch
+ON (Ch.challenge_id = total.ch1 AND total.ch1 = total.ch2) OR
+    (Ch.challenge_id = total.ch1 AND total.ch2 IS NULL) OR
+    (Ch.challenge_id = total.ch2 AND total.ch1 IS NULL)
+JOIN Colleges Col
+USING(college_id)
+JOIN Contests Con
+USING(contest_id)) AS final
+GROUP BY contest_id, name, hacker_id;
