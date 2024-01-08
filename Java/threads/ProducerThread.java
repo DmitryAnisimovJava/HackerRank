@@ -18,7 +18,8 @@ public class ProducerThread extends Thread {
 
 		synchronized (warehouse) {
 			while (true) {
-				for (int i = 0; i < 10; i++) {
+				int size = warehouse.size();
+				for (int i = 0; i < 10 - size; i++) {
 					int number = random.nextInt(11);
 					warehouse.add(number);
 					System.out.println(String.format("Producer добавил число %d в хранилище", number));
