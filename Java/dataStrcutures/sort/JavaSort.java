@@ -1,11 +1,11 @@
-package dataStrcutures;
+package dataStrcutures.sort;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-class Student{
+class Student {
 	private int id;
 	private String fname;
 	private double cgpa;
@@ -72,21 +72,21 @@ public class JavaSort {
 		Scanner in = new Scanner(System.in);
 		int testCases = Integer.parseInt(in.nextLine());
 		
-		List<Student> studentList = new ArrayList<Student>();
+		List<Student> studentForSortList = new ArrayList<Student>();
 		while(testCases>0){
 			int id = in.nextInt();
 			String fname = in.next();
 			double cgpa = in.nextDouble();
 			
 			Student st = new Student(id, fname, cgpa);
-			studentList.add(st);
+			studentForSortList.add(st);
 			
 			testCases--;
 		}
 		
 		StudentComparator comparator = new StudentComparator();
-		studentList.sort(comparator);
-      	for(Student st: studentList){
+		studentForSortList.sort(comparator);
+      	for(Student st: studentForSortList){
 			System.out.println(st.getFname());
 		}
 	}
